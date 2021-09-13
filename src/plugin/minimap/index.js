@@ -373,6 +373,10 @@ export default class MinimapPlugin {
             this.overviewPosition =
                 this.drawer.container.offsetWidth - this.overviewWidth;
         }
+        // make sure the overview region doesn't extend beyond the container width
+        if (this.overviewPosition + this.overviewWidth + this.params.overviewBorderSize > this.drawer.wrapper.getBoundingClientRect().width) {
+            this.overviewPosition = this.drawer.wrapper.getBoundingClientRect().width - this.overviewWidth - this.params.overviewBorderSize;
+        }
         this.util.style(this.overviewRegion, {
             left: this.overviewPosition + 'px'
         });
