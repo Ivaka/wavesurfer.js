@@ -302,7 +302,25 @@ export default class MinimapPlugin {
             });
         }
 
+
         if (this.params.showOverview) {
+            if (this.params.panOnClick) {
+                this.drawer.wrapper.addEventListener('click', event => {
+                    this.fireEvent('click', event, this.drawer.handleEvent(event));
+                });
+                this.on('click', (e, position) => {
+                    if (!this.draggingOverview) {
+                        const event = this.util.withOrientation(e, this.wavesurfer.params.vertical);
+                        this.wavesurfer.drawer.recenter(position);
+                        this.moveOverviewRegion(
+                            event.clientX -
+                            this.drawer.container.getBoundingClientRect().left -
+                            event.layerX
+                        );
+                    }
+                });
+            }
+
             this.overviewRegion.domElement.addEventListener('mousedown', e => {
                 const event = this.util.withOrientation(e, this.wavesurfer.params.vertical);
                 this.draggingOverview = true;
